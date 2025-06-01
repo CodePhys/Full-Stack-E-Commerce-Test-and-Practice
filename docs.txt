@@ -1,0 +1,2 @@
+nav menu is responsible for navigating between different sections of the application.
+It is a simple component that renders a list of links to different pages.

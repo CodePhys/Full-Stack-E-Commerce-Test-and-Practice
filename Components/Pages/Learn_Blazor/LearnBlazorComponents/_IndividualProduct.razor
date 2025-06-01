@@ -1,0 +1,46 @@
+﻿@using Models
+
+<div class="bg-light border m-1 col-5">
+
+    <h4 class="text-secondary">Product @Product.Id</h4>
+    <input type="checkbox" @onchange="FavoriteUpdated" /> Add to Favorites <br />
+    Name: @Product.Name<br />
+    Show Properties:
+    <input type="checkbox"  @bind="Product .IsActive" />
+
+    @if (Product.IsActive)
+    {
+        <ul>
+            @foreach (var item in Product.ProductProperties)
+            {
+                <li>@item.Key : @item.Value</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-danger">Product is not active</p>
+    }
+    @*                 <input type="button" class="btn btn-danger" style=" width:100px" height="100px" value="Delete" @onclick="() => DeleteProduct(prod.Id)" />
+    *@                <br />
+
+    <_DeleteButtonComponent></_DeleteButtonComponent>
+</div>
+<br />
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnFavoriteUpdated { get; set; }
+
+    private async Task FavoriteUpdated(ChangeEventArgs args)
+    {
+        
+    
+    await OnFavoriteUpdated.InvokeAsync((bool)(args.Value??false));
+        //await Task.Delay(1000);
+        //Console.WriteLine("Favorite Updated");,
+    }
+
+}

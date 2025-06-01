@@ -1,0 +1,95 @@
+﻿@page "/learnBlazor/demoproduct"
+@using Models
+
+
+<h2 class="text-primary">DemoProduct</h2>
+<p>Favorite Count: @FavoriteCount</p>
+<div class="border p-2 mt-2 bg-secondary">
+    <div class="row">
+        @foreach(var prod in ProductList)
+        {
+           <_IndividualProduct Product="prod" OnFavoriteUpdated="FavoriteCountChange" ></_IndividualProduct>
+            
+        }
+    </div>
+
+</div>
+@code {
+
+    public int FavoriteCount { get; set; } = 0;
+
+    public void DeleteProduct(int id)
+    {
+        var product = ProductList.FirstOrDefault(x => x.Id == id);
+        if (product != null)
+        {
+            ProductList.Remove(product);
+        }
+
+    }
+    protected void FavoriteCountChange(bool isSelected)
+    {
+        if (isSelected)
+        {
+            FavoriteCount++;
+        }
+        else
+        {
+            FavoriteCount--;
+        }
+
+    }
+
+
+    List <Product> ProductList = new();
+    protected override void OnInitialized()
+    {
+        ProductList.Add(new()
+            {
+                Id = 1,
+                Name = "Product 1",
+                IsActive = true,
+                Price = 100,
+                ProductProperties = new List<Models.Product_Prop>()
+          {
+              new Product_Prop(){ Id=1, Key="Color", Value="Red"},//gli statements disponibili per tutti i fil vanno negli imports
+              new Product_Prop(){ Id=2, Key="Size", Value="Large"}, //cosi se uso gli statments @using
+              new Models.Product_Prop(){ Id=3, Key="Weight", Value="1kg"},
+              new Models.Product_Prop(){ Id=4, Key="Material", Value="Plastic"},
+
+          }
+            });
+        ProductList.Add(new()
+            {
+                Id = 2,
+                Name = "Product 2",
+                IsActive = false,
+                Price = 10.99,
+                ProductProperties = new List<Models.Product_Prop>()
+          {
+              new Product_Prop(){ Id=1, Key="Color", Value="Purple"},//gli statements disponibili per tutti i fil vanno negli imports
+              new Product_Prop(){ Id=2, Key="Size", Value="20oz"}, //cosi se uso gli statments @using
+              new Models.Product_Prop(){ Id=3, Key="Weight", Value="5kg"},
+              new Models.Product_Prop(){ Id=4, Key="Material", Value="Iron"},
+
+          }
+            });
+        ProductList.Add(new()
+            {
+                Id = 3,
+                Name = "Product 3",
+                IsActive = true,
+                Price = 1000,
+                ProductProperties = new List<Models.Product_Prop>()
+          {
+              new Product_Prop(){ Id=1, Key="Color", Value="Blue"},//gli statements disponibili per tutti i fil vanno negli imports
+              new Product_Prop(){ Id=2, Key="Size", Value="Small"}, //cosi se uso gli statments @using
+              new Models.Product_Prop(){ Id=3, Key="Weight", Value="10kg"},
+              new Models.Product_Prop(){ Id=4, Key="Material", Value="Wood"},
+
+          }
+            });
+
+
+    }
+}

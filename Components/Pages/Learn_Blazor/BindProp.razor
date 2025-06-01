@@ -1,0 +1,168 @@
+﻿@page "/learnBlazor/bindprop"
+@using Models
+
+<div class="row">
+    <div class="col-6 border p-3">
+        IsActive : @Product.IsActive <br />
+        IsActive :
+        <input type="checkbox" @bind="@Product.IsActive" />
+        <br />
+        Price : @Product.Price <br />
+        This Product is @if (Product.IsActive == true)
+        {
+            <span style="color:green">Active</span>
+        }
+        else
+        {
+            <span style="color:red">Inactive</span>
+        }
+        <br />
+        Input Price :  <input type="number" @bind="@Product.Price" @bind:event="oninput" /> <br />
+        Input Price :  <input type="number" @bind-value="@Product.Price" @bind-value:event="oninput" /> <br />
+
+
+    </div>
+    <div class="col-6 border p-3">
+        <h3 class="text-primary">Product -Data Binding</h3>
+
+
+
+        Name : @Product.Name <br />
+
+        Product Properties
+        <select @bind="selectedProp">
+            @foreach (var item in Product.ProductProperties)
+            {
+                <option value="@item.Key">@item.Key</option>
+            }
+        </select>
+        <br />
+
+    </div>
+
+
+
+</div>
+
+
+<table class="table table-striped">
+    <thead>
+       
+        <tr>
+            <th scope="col">
+                Product Name
+            </th >
+            <th scope="col">
+                Product Price
+            </th >
+            <th scope="col">is Active</th>
+        </tr>
+          
+    </thead>
+    <tbody>
+         @foreach(var Product in ProductList){
+        <tr scope="row">
+            <td>
+               <input type="text" @bind="Product.Name" @bind:event="oninput" />
+            </td>
+            <td>
+               <input type="text" @bind="Product.Price" @bind:event="oninput" />
+            </td>
+            <td>
+               <input type="checkbox" @bind="@Product.IsActive" />
+            </td>
+        </tr>
+         }
+    </tbody>
+</table>
+
+<h2>Product Summary</h2>
+@foreach (var Product in ProductList)
+{
+    <p>
+        @Product.Name [@Product.Price] - @(Product.IsActive? "Active" : "Inactive") <br />
+    </p>
+}
+
+@if(!string.IsNullOrEmpty(selectedProp))
+{
+    <span style="color:blue">Selected Property : @selectedProp</span><br />
+    <p>Selected Value : @Product.ProductProperties.FirstOrDefault(u=>u.Key==selectedProp).Value</p>
+
+}
+
+
+
+@code {
+    private string selectedProp = "";   
+
+
+    Product Product = new()
+    {  //is same that new Models.Product();
+        Id=1,
+        Name="Product 1",
+        IsActive=true,
+        Price=100,
+        ProductProperties = new List<Models.Product_Prop>()
+        {
+            new Product_Prop(){ Id=1, Key="Color", Value="Red"},//gli statements disponibili per tutti i fil vanno negli imports
+            new Product_Prop(){ Id=2, Key="Size", Value="Large"}, //cosi se uso gli statments @using
+            new Models.Product_Prop(){ Id=3, Key="Weight", Value="1kg"},
+            new Models.Product_Prop(){ Id=4, Key="Material", Value="Plastic"},
+        }
+
+    };
+    List<Product> ProductList = new List<Product>();
+
+
+    protected override void OnInitialized()
+    {
+        ProductList.Add(new()
+        {
+                Id = 1,
+                Name = "Product 1",
+                IsActive = true,
+                Price = 100,
+            ProductProperties = new List<Models.Product_Prop>()
+            {
+                new Product_Prop(){ Id=1, Key="Color", Value="Red"},//gli statements disponibili per tutti i fil vanno negli imports
+                new Product_Prop(){ Id=2, Key="Size", Value="Large"}, //cosi se uso gli statments @using
+                new Models.Product_Prop(){ Id=3, Key="Weight", Value="1kg"},
+                new Models.Product_Prop(){ Id=4, Key="Material", Value="Plastic"},
+   
+            }
+        });
+        ProductList.Add(new()
+        {
+            Id = 2,
+            Name = "Product 2",
+            IsActive = false,
+            Price = 10.99,
+            ProductProperties = new List<Models.Product_Prop>()
+            {
+                new Product_Prop(){ Id=1, Key="Color", Value="Purple"},//gli statements disponibili per tutti i fil vanno negli imports
+                new Product_Prop(){ Id=2, Key="Size", Value="20oz"}, //cosi se uso gli statments @using
+                new Models.Product_Prop(){ Id=3, Key="Weight", Value="5kg"},
+                new Models.Product_Prop(){ Id=4, Key="Material", Value="Iron"},
+   
+            }
+        });
+        ProductList.Add(new()
+        {
+            Id = 3,
+            Name = "Product 3",
+            IsActive = true,
+            Price = 1000,
+            ProductProperties = new List<Models.Product_Prop>()
+            {
+                new Product_Prop(){ Id=1, Key="Color", Value="Blue"},//gli statements disponibili per tutti i fil vanno negli imports
+                new Product_Prop(){ Id=2, Key="Size", Value="Small"}, //cosi se uso gli statments @using
+                new Models.Product_Prop(){ Id=3, Key="Weight", Value="10kg"},
+                new Models.Product_Prop(){ Id=4, Key="Material", Value="Wood"},
+   
+            }
+        });
+
+
+    }
+}
